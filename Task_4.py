@@ -11,6 +11,8 @@ def input_error(func):
     return inner
 
 def parse_input(user_input):
+    if not user_input.strip():
+        return None, None
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
     return cmd, args
@@ -55,9 +57,15 @@ def main():
     contacts = {}
     print("Welcome to the assistant bot!")
     while True:
-        user_input = input("Enter a command: ")
+        try:
+            user_input = input("Enter a command: ")
+        except KeyboardInterrupt:
+            print("\nGood bye!")
+            break
         command, args = parse_input(user_input)
-
+        if command is None:
+            print("No command entered. Please, enter a command!")
+            continue
         if command in ["close", "exit"]:
             print("Good bye!")
             break
